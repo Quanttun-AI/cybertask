@@ -5,12 +5,25 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import Layout from '@/components/Layout';
 import PasswordInput from '@/components/PasswordInput';
 import { toast } from 'sonner';
-import { Eye, EyeOff, LogOut, Save, User } from 'lucide-react';
+import { Eye, EyeOff, LogOut, Save, User, ArrowLeft, Trash2 } from 'lucide-react';
 import { getInitials, getContrastColor } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 const Profile: React.FC = () => {
-  const { currentUser, updateUsername, updatePassword, updateProfileImage, saveChanges, hasUnsavedChanges, getRecoveryCode, logout } = useAuth();
+  const { currentUser, updateUsername, updatePassword, updateProfileImage, saveChanges, hasUnsavedChanges, getRecoveryCode, logout, deleteAccount } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,6 +31,8 @@ const Profile: React.FC = () => {
   const [showRecoveryCode, setShowRecoveryCode] = useState(false);
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -36,6 +51,10 @@ const Profile: React.FC = () => {
     setPassword(value);
   };
 
+  const handleConfirmPasswordChange = (value: string) => {
+    setConfirmPassword(value);
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -52,6 +71,16 @@ const Profile: React.FC = () => {
   const handleRemoveImage = () => {
     setProfileImage(undefined);
     updateProfileImage(undefined);
+  };
+
+  const handleGoBack = () => {
+    if (hasUnsavedChanges) {
+      if (window.confirm(t('confirmUnsavedChanges'))) {
+        navigate('/');
+      }
+    } else {
+      navigate('/');
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -88,6 +117,29 @@ const Profile: React.FC = () => {
     toast.success(t('logout'));
   };
 
+  const handleDeleteAccount = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDeleteAccount = () => {
+    if (!currentUser) return;
+
+    if (confirmPassword !== currentUser.password) {
+      toast.error(t('invalidCredentials'));
+      return;
+    }
+
+    const success = deleteAccount(currentUser.username);
+    if (success) {
+      toast.success(t('accountDeleted'));
+      navigate('/login');
+    } else {
+      toast.error(t('error'));
+    }
+    setShowDeleteDialog(false);
+    setConfirmPassword('');
+  };
+
   if (!currentUser) {
     return null;
   }
@@ -95,6 +147,17 @@ const Profile: React.FC = () => {
   return (
     <Layout>
       <div className="max-w-md mx-auto">
+        <div className="mb-6">
+          <Button 
+            variant="ghost" 
+            onClick={handleGoBack} 
+            className="flex items-center text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            {t('back')}
+          </Button>
+        </div>
+        
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold animate-text-glow mb-2">{t('profile')}</h1>
           <p className="text-muted-foreground">{t('editProfile')}</p>
@@ -204,22 +267,33 @@ const Profile: React.FC = () => {
           </div>
           
           <div className="flex flex-col-reverse sm:flex-row pt-4 gap-2 sm:justify-between">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="px-4 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors flex items-center justify-center"
-            >
-              <LogOut className="mr-2 h-5 w-5" />
-              {t('logout')}
-            </button>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={handleLogout}
+                className="flex items-center justify-center"
+              >
+                <LogOut className="mr-2 h-5 w-5" />
+                {t('logout')}
+              </Button>
+              
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDeleteAccount}
+                className="flex items-center justify-center"
+              >
+                <Trash2 className="mr-2 h-5 w-5" />
+                {t('deleteAccount')}
+              </Button>
+            </div>
             
             {hasUnsavedChanges && (
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading}
-                className={`px-4 py-2 rounded-md transition-colors flex items-center justify-center ${
-                  isLoading ? 'bg-secondary' : 'bg-neon-purple/20 hover:bg-neon-purple/30'
-                }`}
+                className="bg-neon-purple/20 hover:bg-neon-purple/30 flex items-center justify-center"
               >
                 {isLoading ? (
                   <div className="h-5 w-5 border-2 border-t-transparent border-neon-purple rounded-full animate-spin"/>
@@ -229,11 +303,42 @@ const Profile: React.FC = () => {
                     {t('saveChanges')}
                   </>
                 )}
-              </button>
+              </Button>
             )}
           </div>
         </form>
       </div>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="bg-background border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('deleteAccount')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('deleteAccountConfirm')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="my-4">
+            <label htmlFor="confirm-password" className="block text-sm font-medium mb-2">
+              {t('confirmPassword')}
+            </label>
+            <PasswordInput
+              id="confirm-password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              required
+            />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDeleteAccount}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {t('deleteAccount')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };

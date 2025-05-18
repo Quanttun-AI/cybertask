@@ -59,6 +59,10 @@ export const translations = {
     recoveryCodeInfo: "Guarde este código em um local seguro. Ele será necessário para recuperar sua conta caso você esqueça sua senha.",
     saveChanges: "Salvar alterações",
     logout: "Sair",
+    deleteAccount: "Excluir conta",
+    deleteAccountConfirm: "Para confirmar a exclusão da sua conta, por favor digite sua senha atual. Esta ação não pode ser desfeita.",
+    accountDeleted: "Conta excluída com sucesso",
+    confirmUnsavedChanges: "Você tem alterações não salvas. Deseja sair mesmo assim?",
     
     // General
     save: "Salvar",
@@ -146,6 +150,10 @@ export const translations = {
     recoveryCodeInfo: "このコードは安全な場所に保管してください。パスワードを忘れた場合にアカウントを回復するために必要です。",
     saveChanges: "変更を保存",
     logout: "ログアウト",
+    deleteAccount: "アカウントを削除",
+    deleteAccountConfirm: "アカウントの削除を確認するには、現在のパスワードを入力してください。この操作は元に戻せません。",
+    accountDeleted: "アカウントが削除されました",
+    confirmUnsavedChanges: "保存されていない変更があります。それでも移動しますか？",
     
     // General
     save: "保存",

@@ -24,9 +24,59 @@ interface AuthContextType {
   getRecoveryCode: () => string;
   saveChanges: () => void;
   hasUnsavedChanges: boolean;
+  deleteAccount: (username: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Add console commands
+const setupConsoleCommands = (
+  loginFn: (username: string, password: string) => boolean,
+  deleteFn: (username: string) => boolean
+) => {
+  // @ts-ignore - Adding global functions
+  window.deleteUser = (username: string) => {
+    if (username === 'all') {
+      localStorage.removeItem('users');
+      console.log('All users have been deleted');
+      return true;
+    } else {
+      const success = deleteFn(username);
+      if (success) {
+        console.log(`User ${username} has been deleted`);
+      } else {
+        console.log(`User ${username} not found`);
+      }
+      return success;
+    }
+  };
+
+  // @ts-ignore - Adding global functions
+  window.listUsers = () => {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const usernames = users.map((user: User) => user.username);
+    console.log('Registered users:', usernames);
+    return usernames;
+  };
+
+  // @ts-ignore - Adding global functions
+  window.loginUser = (username: string) => {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: User) => u.username === username);
+    
+    if (user) {
+      const success = loginFn(username, user.password);
+      if (success) {
+        console.log(`Logged in as ${username}`);
+        window.location.href = '/'; // Redirect to index
+      }
+      return success;
+    } else {
+      console.log(`User ${username} not found`);
+      return false;
+    }
+  };
+};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -111,6 +161,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('currentUser');
   };
 
+  const deleteAccount = (username: string): boolean => {
+    const users = getUsers();
+    const userIndex = users.findIndex(user => user.username === username);
+    
+    if (userIndex === -1) {
+      return false;
+    }
+    
+    const updatedUsers = [...users];
+    updatedUsers.splice(userIndex, 1);
+    
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    
+    // If we're deleting the current user, log out
+    if (currentUser?.username === username) {
+      logout();
+    }
+    
+    return true;
+  };
+
   const updateUsername = (newUsername: string): boolean => {
     if (!currentUser) return false;
     
@@ -166,6 +237,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
+  // Initialize console commands
+  useEffect(() => {
+    setupConsoleCommands(login, deleteAccount);
+  }, []);
+
   return (
     <AuthContext.Provider value={{
       currentUser,
@@ -180,7 +256,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       resetPassword,
       getRecoveryCode,
       saveChanges,
-      hasUnsavedChanges: hasUnsavedChanges()
+      hasUnsavedChanges: hasUnsavedChanges(),
+      deleteAccount
     }}>
       {initialized && children}
     </AuthContext.Provider>
