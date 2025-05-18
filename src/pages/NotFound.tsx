@@ -1,8 +1,12 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+
+import React, { useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
+import Layout from '@/components/Layout';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const NotFound = () => {
   const location = useLocation();
+  const { t } = useLanguage();
 
   useEffect(() => {
     console.error(
@@ -12,15 +16,23 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
+    <Layout>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center">
+        <h1 className="text-8xl font-bold text-gradient mb-4">404</h1>
+        <p className="text-2xl text-muted-foreground mb-8">{t('pageNotFound')}</p>
+        
+        <div className="glitch relative text-xl mb-8" data-text="SYSTEM MALFUNCTION">
+          SYSTEM MALFUNCTION
+        </div>
+        
+        <Link
+          to="/"
+          className="px-6 py-3 rounded-md bg-neon-purple/20 hover:bg-neon-purple/30 transition-all duration-300 animate-border-glow"
+        >
+          {t('backToHome')}
+        </Link>
       </div>
-    </div>
+    </Layout>
   );
 };
 

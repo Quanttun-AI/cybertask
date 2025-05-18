@@ -1,0 +1,159 @@
+
+export const translations = {
+  pt: {
+    // Auth
+    login: "Entrar",
+    register: "Registrar",
+    forgotPassword: "Esqueceu a senha?",
+    username: "Nome de usuário",
+    password: "Senha",
+    confirmPassword: "Confirmar senha",
+    profileImage: "Imagem de perfil (opcional)",
+    recoverAccount: "Recuperar conta",
+    resetPassword: "Redefinir senha",
+    enterRecoveryCode: "Digite o código de recuperação",
+    enterNewPassword: "Digite a nova senha",
+    confirmNewPassword: "Confirme a nova senha",
+    submit: "Enviar",
+    cancel: "Cancelar",
+    
+    // Validation
+    usernameRequired: "Nome de usuário é obrigatório",
+    passwordRequired: "Senha é obrigatória",
+    passwordsNotMatch: "As senhas não coincidem",
+    usernameExists: "Nome de usuário já existe",
+    invalidCredentials: "Nome de usuário ou senha inválidos",
+    invalidRecoveryCode: "Código de recuperação inválido",
+    
+    // Todo
+    addTask: "Adicionar tarefa",
+    taskPlaceholder: "Digite uma nova tarefa",
+    noTasks: "Você não tem tarefas",
+    completed: "Concluído",
+    active: "Ativo",
+    all: "Todas",
+    clearCompleted: "Limpar concluídas",
+    tasksLeft: "tarefas restantes",
+    taskLeft: "tarefa restante",
+    
+    // Profile
+    profile: "Perfil",
+    editProfile: "Editar perfil",
+    changeUsername: "Alterar nome de usuário",
+    changePassword: "Alterar senha",
+    currentPassword: "Senha atual",
+    newPassword: "Nova senha",
+    changeProfileImage: "Alterar imagem de perfil",
+    removeProfileImage: "Remover imagem de perfil",
+    uploadImage: "Carregar imagem",
+    recoveryCode: "Seu código de recuperação",
+    recoveryCodeInfo: "Guarde este código em um local seguro. Ele será necessário para recuperar sua conta caso você esqueça sua senha.",
+    saveChanges: "Salvar alterações",
+    logout: "Sair",
+    
+    // General
+    save: "Salvar",
+    delete: "Excluir",
+    edit: "Editar",
+    close: "Fechar",
+    show: "Mostrar",
+    hide: "Esconder",
+    loading: "Carregando",
+    error: "Erro",
+    success: "Sucesso",
+    welcome: "Bem-vindo",
+    
+    // Pages
+    todoList: "Lista de Tarefas",
+    loginPage: "Entrar",
+    registerPage: "Registrar",
+    profilePage: "Perfil",
+    
+    // Messages
+    welcomeBack: "Bem-vindo de volta",
+    accountCreated: "Conta criada com sucesso",
+    passwordReset: "Senha redefinida com sucesso",
+    changesSaved: "Alterações salvas com sucesso",
+    confirmLogout: "Deseja realmente sair?",
+    yes: "Sim",
+    no: "Não",
+  },
+  ja: {
+    // Auth
+    login: "ログイン",
+    register: "登録",
+    forgotPassword: "パスワードをお忘れですか？",
+    username: "ユーザー名",
+    password: "パスワード",
+    confirmPassword: "パスワードの確認",
+    profileImage: "プロフィール画像（オプション）",
+    recoverAccount: "アカウント回復",
+    resetPassword: "パスワードのリセット",
+    enterRecoveryCode: "リカバリーコードを入力してください",
+    enterNewPassword: "新しいパスワードを入力してください",
+    confirmNewPassword: "新しいパスワードを確認してください",
+    submit: "送信",
+    cancel: "キャンセル",
+    
+    // Validation
+    usernameRequired: "ユーザー名は必須です",
+    passwordRequired: "パスワードは必須です",
+    passwordsNotMatch: "パスワードが一致しません",
+    usernameExists: "ユーザー名は既に存在します",
+    invalidCredentials: "ユーザー名またはパスワードが無効です",
+    invalidRecoveryCode: "リカバリーコードが無効です",
+    
+    // Todo
+    addTask: "タスクを追加",
+    taskPlaceholder: "新しいタスクを入力",
+    noTasks: "タスクはありません",
+    completed: "完了",
+    active: "アクティブ",
+    all: "すべて",
+    clearCompleted: "完了したタスクをクリア",
+    tasksLeft: "個のタスクが残っています",
+    taskLeft: "個のタスクが残っています",
+    
+    // Profile
+    profile: "プロフィール",
+    editProfile: "プロフィール編集",
+    changeUsername: "ユーザー名を変更",
+    changePassword: "パスワードを変更",
+    currentPassword: "現在のパスワード",
+    newPassword: "新しいパスワード",
+    changeProfileImage: "プロフィール画像を変更",
+    removeProfileImage: "プロフィール画像を削除",
+    uploadImage: "画像をアップロード",
+    recoveryCode: "リカバリーコード",
+    recoveryCodeInfo: "このコードは安全な場所に保管してください。パスワードを忘れた場合にアカウントを回復するために必要です。",
+    saveChanges: "変更を保存",
+    logout: "ログアウト",
+    
+    // General
+    save: "保存",
+    delete: "削除",
+    edit: "編集",
+    close: "閉じる",
+    show: "表示",
+    hide: "非表示",
+    loading: "読み込み中",
+    error: "エラー",
+    success: "成功",
+    welcome: "ようこそ",
+    
+    // Pages
+    todoList: "タスクリスト",
+    loginPage: "ログイン",
+    registerPage: "登録",
+    profilePage: "プロフィール",
+    
+    // Messages
+    welcomeBack: "おかえりなさい",
+    accountCreated: "アカウントが作成されました",
+    passwordReset: "パスワードがリセットされました",
+    changesSaved: "変更が保存されました",
+    confirmLogout: "本当にログアウトしますか？",
+    yes: "はい",
+    no: "いいえ",
+  }
+};

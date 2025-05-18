@@ -1,101 +1,190 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 252 95% 85%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 252 87% 59%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 252 95% 85%;
+    --radius: 0.75rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border selection:bg-accent/20 selection:text-white;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-cyber antialiased overflow-x-hidden;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    min-height: 100vh;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(155, 135, 245, 0.05) 0%, transparent 100%),
+      linear-gradient(to right, rgba(26, 31, 44, 0.8), rgba(26, 31, 44, 0.8)),
+      repeating-linear-gradient(to right, rgba(155, 135, 245, 0.03) 0px, rgba(155, 135, 245, 0.03) 1px, transparent 1px, transparent 50px),
+      repeating-linear-gradient(to bottom, rgba(155, 135, 245, 0.03) 0px, rgba(155, 135, 245, 0.03) 1px, transparent 1px, transparent 50px);
+  }
+}
+
+@layer utilities {
+  .neon-border {
+    @apply border border-neon-purple/60 rounded-md shadow-[0_0_10px_rgba(155,135,245,0.5)] transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,135,245,0.7)];
+  }
+  
+  .neon-glow {
+    @apply shadow-[0_0_10px_rgba(155,135,245,0.5)] transition-all duration-300 hover:shadow-[0_0_20px_rgba(155,135,245,0.7)];
+  }
+  
+  .glass-card {
+    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
+  }
+  
+  .text-glow {
+    @apply text-neon-purple animate-text-glow;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  .neo-blur {
+    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-br from-neon-purple via-neon-pink to-neon-blue bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 135, 245, 0.5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(155, 135, 245, 0.8);
+}
+
+/* Cyberpunk glitch effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 #d946ef;
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 #1eaedb;
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip: rect(41px, 9999px, 37px, 0);
+  }
+  10% {
+    clip: rect(12px, 9999px, 89px, 0);
+  }
+  20% {
+    clip: rect(99px, 9999px, 99px, 0);
+  }
+  30% {
+    clip: rect(68px, 9999px, 27px, 0);
+  }
+  40% {
+    clip: rect(16px, 9999px, 17px, 0);
+  }
+  50% {
+    clip: rect(9px, 9999px, 57px, 0);
+  }
+  60% {
+    clip: rect(56px, 9999px, 74px, 0);
+  }
+  70% {
+    clip: rect(65px, 9999px, 49px, 0);
+  }
+  80% {
+    clip: rect(23px, 9999px, 67px, 0);
+  }
+  90% {
+    clip: rect(28px, 9999px, 6px, 0);
+  }
+  100% {
+    clip: rect(61px, 9999px, 51px, 0);
+  }
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip: rect(36px, 9999px, 100px, 0);
+  }
+  15% {
+    clip: rect(4px, 9999px, 74px, 0);
+  }
+  30% {
+    clip: rect(91px, 9999px, 40px, 0);
+  }
+  45% {
+    clip: rect(66px, 9999px, 46px, 0);
+  }
+  60% {
+    clip: rect(80px, 9999px, 100px, 0);
+  }
+  75% {
+    clip: rect(2px, 9999px, 14px, 0);
+  }
+  90% {
+    clip: rect(60px, 9999px, 83px, 0);
+  }
+  100% {
+    clip: rect(56px, 9999px, 6px, 0);
   }
 }
