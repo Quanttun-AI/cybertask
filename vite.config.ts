@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
-  base: process.env.NODE_ENV === 'production' ? '/cyber-todo-nexus/' : '/',
+  base: './', // Changed from '/cyber-todo-nexus/' to './' for proper resource loading
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
