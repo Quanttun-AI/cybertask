@@ -16,6 +16,15 @@ export const translations = {
     confirmNewPassword: "Confirme a nova senha",
     submit: "Enviar",
     cancel: "Cancelar",
+    continue: "Continuar",
+    back: "Voltar",
+    backToLogin: "Voltar para login",
+    verify: "Verificar",
+    dontHaveAccount: "Não tem uma conta?",
+    alreadyHaveAccount: "Já tem uma conta?",
+    createAccount: "Criar conta",
+    pageNotFound: "Página não encontrada",
+    backToHome: "Voltar para a página inicial",
     
     // Validation
     usernameRequired: "Nome de usuário é obrigatório",
@@ -94,6 +103,15 @@ export const translations = {
     confirmNewPassword: "新しいパスワードを確認してください",
     submit: "送信",
     cancel: "キャンセル",
+    continue: "続ける",
+    back: "戻る",
+    backToLogin: "ログインに戻る",
+    verify: "確認",
+    dontHaveAccount: "アカウントをお持ちではありませんか？",
+    alreadyHaveAccount: "すでにアカウントをお持ちですか？",
+    createAccount: "アカウント作成",
+    pageNotFound: "ページが見つかりません",
+    backToHome: "ホームに戻る",
     
     // Validation
     usernameRequired: "ユーザー名は必須です",
