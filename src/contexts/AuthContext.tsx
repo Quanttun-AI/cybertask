@@ -210,6 +210,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .delete()
         .eq('id', userData.id);
 
+      // Deletar o usuário na autenticação
+      if (currentUser?.id === userData.id) {
+        await supabaseClient.auth.admin.deleteUser(userData.id);
+      }
+
       // Se o usuário atual for o que está sendo deletado, faça logout
       if (currentUser?.username === username) {
         await logout();

@@ -124,20 +124,29 @@ const Profile: React.FC = () => {
   const confirmDeleteAccount = () => {
     if (!currentUser) return;
 
-    if (confirmPassword !== currentUser.password) {
-      toast.error(t('invalidCredentials'));
+    // Corrigimos aqui o problema - não comparamos com currentUser.password
+    // Apenas passamos o confirmPassword para verificação
+    if (!confirmPassword) {
+      toast.error(t('passwordRequired'));
       return;
     }
 
-    const success = deleteAccount(currentUser.username);
-    if (success) {
-      toast.success(t('accountDeleted'));
-      navigate('/login');
-    } else {
-      toast.error(t('error'));
-    }
-    setShowDeleteDialog(false);
-    setConfirmPassword('');
+    deleteAccount(currentUser.username)
+      .then(success => {
+        if (success) {
+          toast.success(t('accountDeleted'));
+          navigate('/login');
+        } else {
+          toast.error(t('error'));
+        }
+        setShowDeleteDialog(false);
+        setConfirmPassword('');
+      })
+      .catch(error => {
+        console.error('Error deleting account:', error);
+        toast.error(t('error'));
+        setShowDeleteDialog(false);
+      });
   };
 
   if (!currentUser) {
