@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createClient } from '@supabase/supabase-js';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { TodoProvider } from "@/contexts/TodoContext";
@@ -18,64 +20,70 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <LanguageProvider>
-          <TodoProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter basename="/">
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Index />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/login"
-                  element={
-                    <AuthRoute>
-                      <Login />
-                    </AuthRoute>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <AuthRoute>
-                      <Register />
-                    </AuthRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/forgot-password"
-                  element={
-                    <AuthRoute>
-                      <ForgotPassword />
-                    </AuthRoute>
-                  }
-                />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TodoProvider>
-        </LanguageProvider>
-      </AuthProvider>
-    </TooltipProvider>
+    <SessionContextProvider supabaseClient={supabase}>
+      <TooltipProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <TodoProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter basename="/">
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <Index />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <AuthRoute>
+                        <Login />
+                      </AuthRoute>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <AuthRoute>
+                        <Register />
+                      </AuthRoute>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/forgot-password"
+                    element={
+                      <AuthRoute>
+                        <ForgotPassword />
+                      </AuthRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TodoProvider>
+          </LanguageProvider>
+        </AuthProvider>
+      </TooltipProvider>
+    </SessionContextProvider>
   </QueryClientProvider>
 );
 

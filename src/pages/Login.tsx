@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,7 +19,7 @@ const Login: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      const success = login(username, password);
+      const success = await login(username, password);
       
       if (success) {
         toast.success(`${t('welcomeBack')}, ${username}!`);
