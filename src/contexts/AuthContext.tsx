@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { generateUniqueCode } from '@/lib/utils';
@@ -209,11 +208,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .from('user_profiles')
         .delete()
         .eq('id', userData.id);
-
-      // Deletar o usuário na autenticação
-      if (currentUser?.id === userData.id) {
-        await supabaseClient.auth.admin.deleteUser(userData.id);
-      }
 
       // Se o usuário atual for o que está sendo deletado, faça logout
       if (currentUser?.username === username) {

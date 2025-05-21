@@ -19,10 +19,18 @@ export type Todo = {
   user_id: string;
 }
 
+// Verificar se as variáveis de ambiente estão definidas
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Variáveis de ambiente do Supabase não estão definidas');
+}
+
 // Cria o cliente Supabase
 export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+  supabaseUrl || 'https://sua-url-supabase.supabase.co',  // URL padrão caso não esteja definida
+  supabaseKey || 'sua-chave-anonima-supabase'  // Chave padrão caso não esteja definida
 );
 
 // Script para criar as tabelas necessárias no Supabase (executar no SQL editor do Supabase):
