@@ -19,19 +19,17 @@ export type Todo = {
   user_id: string;
 }
 
+// Valores padrão para desenvolvimento local
+// Em produção, estas variáveis devem ser configuradas corretamente
+const FALLBACK_SUPABASE_URL = 'https://your-supabase-project.supabase.co';
+const FALLBACK_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
 // Verificar se as variáveis de ambiente estão definidas
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || FALLBACK_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || FALLBACK_SUPABASE_KEY;
 
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Variáveis de ambiente do Supabase não estão definidas');
-}
-
-// Cria o cliente Supabase com valores reais (não placeholders)
-export const supabase = createClient(
-  supabaseUrl || '',  // Usamos string vazia para forçar o erro ser mais específico
-  supabaseKey || ''   // Usamos string vazia para forçar o erro ser mais específico
-);
+// Cria o cliente Supabase
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Script para criar as tabelas necessárias no Supabase (executar no SQL editor do Supabase):
 /*

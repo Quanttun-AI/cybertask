@@ -18,6 +18,12 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!username || !password) {
+      toast.error(t('fillAllFields'));
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
@@ -26,6 +32,8 @@ const Login: React.FC = () => {
       if (success) {
         toast.success(`${t('welcomeBack')}, ${username}!`);
         navigate('/');
+      } else {
+        toast.error(t('invalidCredentials'));
       }
     } catch (error) {
       console.error('Login error:', error);
