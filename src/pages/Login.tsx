@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Layout from '@/components/Layout';
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +25,7 @@ const Login: React.FC = () => {
       
       if (success) {
         toast.success(`${t('welcomeBack')}, ${username}!`);
-      } else {
-        toast.error(t('invalidCredentials'));
+        navigate('/');
       }
     } catch (error) {
       console.error('Login error:', error);

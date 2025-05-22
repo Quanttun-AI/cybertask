@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Layout from '@/components/Layout';
@@ -17,6 +17,7 @@ const Register: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { register } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -40,12 +41,11 @@ const Register: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      const success = register(username, password, profileImage);
+      const success = await register(username, password, profileImage);
       
       if (success) {
         toast.success(t('accountCreated'));
-      } else {
-        toast.error(t('usernameExists'));
+        navigate('/login');
       }
     } catch (error) {
       console.error('Registration error:', error);

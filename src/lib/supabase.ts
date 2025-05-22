@@ -27,10 +27,10 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('Variáveis de ambiente do Supabase não estão definidas');
 }
 
-// Cria o cliente Supabase
+// Cria o cliente Supabase com valores reais (não placeholders)
 export const supabase = createClient(
-  supabaseUrl || 'https://sua-url-supabase.supabase.co',  // URL padrão caso não esteja definida
-  supabaseKey || 'sua-chave-anonima-supabase'  // Chave padrão caso não esteja definida
+  supabaseUrl || '',  // Usamos string vazia para forçar o erro ser mais específico
+  supabaseKey || ''   // Usamos string vazia para forçar o erro ser mais específico
 );
 
 // Script para criar as tabelas necessárias no Supabase (executar no SQL editor do Supabase):

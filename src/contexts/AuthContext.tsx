@@ -106,6 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .single();
 
       if (!profileData) {
+        toast.error('Usuário não encontrado');
         return false;
       }
 
@@ -117,12 +118,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error || !data.user) {
         console.error('Erro de login:', error);
+        toast.error('Credenciais inválidas');
         return false;
       }
 
       return true;
     } catch (error) {
       console.error('Erro de login:', error);
+      toast.error('Erro ao fazer login');
       return false;
     }
   };
@@ -130,13 +133,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (username: string, password: string, profileImage?: string): Promise<boolean> => {
     try {
       // Verificar se o usuário já existe
-      const { data: existingUser } = await supabaseClient
+      const { data: existingUser, error: userCheckError } = await supabaseClient
         .from('user_profiles')
         .select('id')
         .eq('username', username)
         .single();
 
+      if (userCheckError && userCheckError.code !== 'PGRST116') { // Code PGRST116 means no rows returned
+        console.error('Erro ao verificar usuário existente:', userCheckError);
+        toast.error('Erro ao verificar disponibilidade do nome de usuário');
+        return false;
+      }
+
       if (existingUser) {
+        toast.error('Nome de usuário já existe');
         return false;
       }
 
@@ -148,6 +158,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error || !data.user) {
         console.error('Erro ao registrar:', error);
+        toast.error('Erro ao criar conta');
         return false;
       }
 
@@ -167,12 +178,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (profileError) {
         console.error('Erro ao criar perfil:', profileError);
+        toast.error('Erro ao criar perfil de usuário');
         return false;
       }
 
+      toast.success('Conta criada com sucesso!');
       return true;
     } catch (error) {
       console.error('Erro ao registrar:', error);
+      toast.error('Erro ao criar conta');
       return false;
     }
   };
@@ -187,36 +201,50 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const deleteAccount = async (username: string): Promise<boolean> => {
     try {
       // Verificar se o usuário existe
-      const { data: userData } = await supabaseClient
+      const { data: userData, error: userError } = await supabaseClient
         .from('user_profiles')
         .select('id')
         .eq('username', username)
         .single();
 
-      if (!userData) {
+      if (userError || !userData) {
+        console.error('Erro ao buscar usuário:', userError);
+        toast.error('Usuário não encontrado');
         return false;
       }
 
       // Deletar os todos do usuário
-      await supabaseClient
+      const { error: todosError } = await supabaseClient
         .from('todos')
         .delete()
         .eq('user_id', userData.id);
 
+      if (todosError) {
+        console.error('Erro ao deletar todos:', todosError);
+      }
+
       // Deletar o perfil do usuário
-      await supabaseClient
+      const { error: profileError } = await supabaseClient
         .from('user_profiles')
         .delete()
         .eq('id', userData.id);
+
+      if (profileError) {
+        console.error('Erro ao deletar perfil:', profileError);
+        toast.error('Erro ao deletar perfil');
+        return false;
+      }
 
       // Se o usuário atual for o que está sendo deletado, faça logout
       if (currentUser?.username === username) {
         await logout();
       }
 
+      toast.success('Conta deletada com sucesso');
       return true;
     } catch (error) {
       console.error('Erro ao deletar conta:', error);
+      toast.error('Erro ao deletar conta');
       return false;
     }
   };
